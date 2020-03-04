@@ -1,0 +1,25 @@
+{
+  "name": "mind-the-gap-backend",
+  "version": "1.0.0",
+  "description": "The Start of a Beautiful Project.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bethel-school-of-technology/mind-the-gap-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bethel-school-of-technology/mind-the-gap-backend/issues"
+  },
+  "homepage": "https://github.com/bethel-school-of-technology/mind-the-gap-backend#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
