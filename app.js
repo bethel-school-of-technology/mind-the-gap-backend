@@ -5,6 +5,9 @@ var path = require('path');
 var mongoose = require('mongoose');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+let devDbUser = process.env.DB_USER;
+let devDbPass = process.env.DB_PASS;
+let devDbHost = process.env.DB_HOST;
 
 
 var indexRouter = require('./routes/index');
@@ -23,16 +26,23 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //development only
-if ('development' == app.get('env')) {
-  app.user(express.errorHandler());
-  mongoose.connect('mongodb://'+ DB_USER + ':' + DB_PASS + DB_HOST, {useNewUrlParser: true});
-}
+
+let connection = 'mongodb+srv://'+ devDbUser + ':' + devDbPass + devDbHost
+let mongodb = process.env.MONGODB_URI || connection;
+
+//app.user(express.errorHandler());
+mongoose.connect(connection, {useNewUrlParser: true});
+mongoose.Promise = global.Promise;
+
+let db = mongoose.connection;
+
+//Sends connection error for db into the console.
+db.on('error', console.error.bind(console, "'Mongo DB Connection Error'"))
+
 
 //Set Routeres
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
