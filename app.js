@@ -31,7 +31,7 @@ let connection = 'mongodb+srv://'+ devDbUser + ':' + devDbPass + devDbHost
 let mongodb = process.env.MONGODB_URI || connection;
 
 //app.user(express.errorHandler());
-mongoose.connect(connection, {useNewUrlParser: true});
+mongoose.connect(mongodb, {useNewUrlParser: true});
 mongoose.Promise = global.Promise;
 
 let db = mongoose.connection;
