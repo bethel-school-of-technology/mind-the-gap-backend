@@ -9,6 +9,10 @@ let devDbUser = process.env.DB_USER;
 let devDbPass = process.env.DB_PASS;
 let devDbHost = process.env.DB_HOST;
 
+//models
+const models = require('models');
+const User = models.User;
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
