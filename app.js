@@ -9,15 +9,20 @@ let devDbUser = process.env.DB_USER;
 let devDbPass = process.env.DB_PASS;
 let devDbHost = process.env.DB_HOST;
 
+//Create global app object
+var app = express();
+
+
+
 //models
-const models = require('models');
-const User = models.User;
+require('./models/user');
+
 
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/api/users');
 
-var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -46,7 +51,7 @@ db.on('error', console.error.bind(console, "'Mongo DB Connection Error'"))
 
 //Set Routeres
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

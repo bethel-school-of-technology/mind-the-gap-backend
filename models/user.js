@@ -1,27 +1,27 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+//User Schema Table
 //Mongoose automatically add _id property to schemas, don't add it yourself.
-var userSchema = new Schema({
+var UserSchema = new Schema({
     first_name : String,
     last_name : String,
+    username : String,
     email : String,
     updated : {type: Date, default: Date.now() }
 });
 
-//compile model from schema
-var user = mongoose.model('User', userSchema);
+//Make Schema additions/Changes below
 
-module.exports = mongoose.model('User', userSchema);
 
-// var fullname = '';
 
-//   if (this.first_name && this.family_name) {
-//     fullname = this.family_name + ', ' + this.first_name
-//   }
-//   if (!this.first_name || !this.family_name) {
-//     fullname = '';
-//   }
+//END OF SCHEMA ADDITIONS
 
-//   return fullname;
-// });
+//METHODS
+UserSchema.methods.fullName = function() {
+    fullName = this.first_name + ' ' + this.last_name;
+    return fullName;
+  };
+
+
+mongoose.model('User', UserSchema);
