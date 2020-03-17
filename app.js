@@ -8,6 +8,8 @@ var logger = require('morgan');
 let devDbUser = process.env.DB_USER;
 let devDbPass = process.env.DB_PASS;
 let devDbHost = process.env.DB_HOST;
+const stage = require('./config')[environment];
+var cors = require('cors');
 
 
 var indexRouter = require('./routes/index');
@@ -24,6 +26,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
 
 //development only
 
@@ -59,5 +62,10 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+let port = 5000;
+app.listen(`${stage.port}`,() => {
+  console.log(`Server is up and running on port number: ${stage.port}`);
+})
 
 module.exports = app;
