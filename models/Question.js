@@ -2,28 +2,25 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let Question = new Schema({
-    id: {
-        type: number
-    },    
-    
     name: {
         type: String
     },
-    answer1: {
+    question_order: {
         type: String
     },
-    answer2: {
+    question_statement: {
         type: String
     },
-    answer3: {
+    question_type: {
         type: String
     },
-    answer4: {
-        type: String
+    assessment_id: {
+        type: Number
     },
-    answer5: {
-        type: String
-    }
+    updated_at: {
+        type: Timestamp
+    },
+
 }, {
     collection: 'questions'
 })
