@@ -8,7 +8,7 @@ var logger = require('morgan');
 let devDbUser = process.env.DB_USER;
 let devDbPass = process.env.DB_PASS;
 let devDbHost = process.env.DB_HOST;
-const stage = require('./config')[environment];
+// const stage = require('./config')[development];
 var cors = require('cors');
 
 //Create global app object
@@ -35,7 +35,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(cors());
+// app.use(cors());
 
 //development only
 
@@ -73,8 +73,8 @@ app.use(function(err, req, res, next) {
 });
 
 let port = 5000;
-app.listen(`${stage.port}`,() => {
-  console.log(`Server is up and running on port number: ${stage.port}`);
+app.listen(`${port}`,() => {
+  console.log(`Server is up and running on port number: ${port}`);
 })
 
 module.exports = app;
