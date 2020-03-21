@@ -4,18 +4,18 @@ var User = require('../../models/user');
 
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  User.find(function(err, docs) {
+router.get('/', function(req, res) {
+  User.find(function(err, doc) {
     if (err) return next(err);
-    res.send(docs);
+    res.send("Got Here!");
   });
 });
 
 /* GET an user by id listing. */
-router.get('/', function(req, res, next) {
-  User.find(function(err, docs) {
+router.get('/:id', (req, res) => {
+  User.find({_id: req.params.id}, (err, user) => {
     if (err) return next(err);
-    res.json(docs);
+    res.json(user);
   });
 });
 
@@ -35,12 +35,12 @@ router.post('/', function (req, res) {
 });
 
 //Update Action
-router.put('/user', function (req, res) {
+router.put('/:id', function (req, res) {
   res.json('Got a PUT request at /user')
 });
 
 //Delete Action
-router.delete('/user', function (req, res) {
+router.delete('/:id', function (req, res) {
   res.json('Got a DELETE request at /user')
 });
 
