@@ -5,9 +5,9 @@ var User = require('../../models/user');
 
 /* GET users listing. */
 router.get('/', function(req, res) {
-  User.find(function(err, doc) {
+  User.find(function(err, users) {
     if (err) return next(err);
-    res.send("Got Here!");
+    res.json(users);
   });
 });
 
@@ -51,9 +51,9 @@ router.put('/:id', function (req, res) {
 
 //Delete Action
 router.delete('/:id', function (req, res) {
-  db.collection(CONTACTS_COLLECTION).deleteOne({_id: req.params.id}, function(err, result) {
+  User.find({_id: req.params.id}).deleteOne({_id: req.params.id}, function(err, result) {
     if (err) {
-      handleError(res, err.message, "Failed to delete contact");
+      handleError(res, err.message, "Failed to delete user");
     } else {
       res.status(200).json(req.params.id);
     }
