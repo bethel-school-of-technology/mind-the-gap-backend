@@ -55,7 +55,7 @@ router.delete('/:id', function (req, res) {
     if (err) {
       handleError(res, err.message, "Failed to delete user");
     } else {
-      res.status(200).json(req.params.id);
+      res.status(200).json("Successfully deleted User with id:" + req.params.id);
     }
   });
 });
