@@ -4,6 +4,7 @@ var User = require('../../models/user');
 
 
 /* GET users listing. */
+//http://localhost:5000/api/users
 router.get('/', function(req, res) {
   User.find(function(err, users) {
     if (err) return next(err);
@@ -12,6 +13,7 @@ router.get('/', function(req, res) {
 });
 
 /* GET an user by id listing. */
+//http://localhost:5000/api/users/<id>
 router.get('/:id', (req, res) => {
   User.find({_id: req.params.id}, (err, user) => {
     if (err) return next(err);
@@ -21,7 +23,7 @@ router.get('/:id', (req, res) => {
 
 
 //Create Action
-//url: http://localhost:5000/api/users?first_name=Test&last_name=User&email=example@gmail.com
+//http://localhost:5000/api/users
 router.post('/', function (req, res) {
    User.create({ 
     first_name: req.body.first_name,
@@ -35,6 +37,7 @@ router.post('/', function (req, res) {
 });
 
 //Update Action
+//http://localhost:5000/api/users/<id>
 router.put('/:id', function (req, res) {
   var updateDoc = req.body;
   delete updateDoc._id;
@@ -50,6 +53,7 @@ router.put('/:id', function (req, res) {
 });
 
 //Delete Action
+//http://localhost:5000/api/users/<id>
 router.delete('/:id', function (req, res) {
   User.find({_id: req.params.id}).deleteOne({_id: req.params.id}, function(err, result) {
     if (err) {
