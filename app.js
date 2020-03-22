@@ -8,7 +8,7 @@ var logger = require('morgan');
 let devDbUser = process.env.DB_USER;
 let devDbPass = process.env.DB_PASS;
 let devDbHost = process.env.DB_HOST;
-//const stage = require('./config')[development];
+// const stage = require('./config')[development];
 var cors = require('cors');
 
 //Create global app object
