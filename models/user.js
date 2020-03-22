@@ -11,7 +11,7 @@ var UserSchema = new Schema({
     updated : {type: Date, default: Date.now() }
 });
 
-//Make Schema additions/Changes below
+//Make Schema additions/Changes below when in production
 
 
 

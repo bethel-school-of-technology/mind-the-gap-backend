@@ -8,7 +8,7 @@ var logger = require('morgan');
 let devDbUser = process.env.DB_USER;
 let devDbPass = process.env.DB_PASS;
 let devDbHost = process.env.DB_HOST;
-const stage = require('./config')[environment];
+//const stage = require('./config')[environment];
 var cors = require('cors');
 
 //Create global app object
@@ -18,11 +18,12 @@ var app = express();
 
 //models
 require('./models/user');
-
+require('./models/Question');
 
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/api/users');
+var questionsRouter = require('./routes/api/questions');
 
 
 
@@ -43,7 +44,7 @@ let connection = 'mongodb+srv://'+ devDbUser + ':' + devDbPass + devDbHost
 let mongodb = process.env.MONGODB_URI || connection;
 
 //app.user(express.errorHandler());
-mongoose.connect(mongodb, {useNewUrlParser: true});
+mongoose.connect(mongodb, {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.Promise = global.Promise;
 
 let db = mongoose.connection;
@@ -55,6 +56,7 @@ db.on('error', console.error.bind(console, "'Mongo DB Connection Error'"))
 //Set Routeres
 app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/questions', questionsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -73,8 +75,8 @@ app.use(function(err, req, res, next) {
 });
 
 let port = 5000;
-app.listen(`${stage.port}`,() => {
-  console.log(`Server is up and running on port number: ${stage.port}`);
+app.listen(`${port}`,() => {
+  console.log(`Server is up and running on port number: ${port}`);
 })
 
 module.exports = app;

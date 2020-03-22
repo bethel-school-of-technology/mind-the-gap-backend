@@ -1,28 +1,23 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-let Question = new Schema({
-    name: {
-        type: String
-    },
-    question_order: {
-        type: String
-    },
-    question_statement: {
-        type: String
-    },
-    question_type: {
-        type: String
-    },
-    assessment_id: {
-        type: Number
-    },
-    updated_at: {
-        type: Timestamp
-    },
+//Question Schema Table
+var Question = new Schema({
+    name: String,
+    question_order: Number,
+    question_text: String,
+    question_type: String,
+    assessment_id: Number,
+    updated : {type: Date, default: Date.now() }
 
-}, {
-    collection: 'questions'
-})
+});
+
+
+//Make Schema additions/Changes below
+
+
+
+//END OF SCHEMA ADDITIONS
+
 
 module.exports = mongoose.model('Question', Question)
