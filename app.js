@@ -5,6 +5,7 @@ var path = require('path');
 var mongoose = require('mongoose');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var passport =require('passport');
 let devDbUser = process.env.DB_USER;
 let devDbPass = process.env.DB_PASS;
 let devDbHost = process.env.DB_HOST;
@@ -14,11 +15,11 @@ var cors = require('cors');
 //Create global app object
 var app = express();
 
-
-
 //models
-require('./models/user');
-require('./models/Question');
+//require('./models/user');
+//require('./api/models/db');
+//require('./api/config/passport');
+
 
 
 var indexRouter = require('./routes/index');
@@ -30,6 +31,10 @@ var questionsRouter = require('./routes/api/questions');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+//passport setup
+app.use(passport.initialize());
+app.use('/api', routesApi);
 
 app.use(logger('dev'));
 app.use(express.json());
