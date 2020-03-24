@@ -16,4 +16,4 @@ var Assessment = new Schema({
 //END OF SCHEMA ADDITIONS
 
 
-module.exports = mongoose.model('Assessment', Assessment)
+module.exports = mongoose.model('Assessment', Assessment);

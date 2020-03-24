@@ -20,4 +20,4 @@ var Question = new Schema({
 //END OF SCHEMA ADDITIONS
 
 
-module.exports = mongoose.model('Question', Question)
+module.exports = mongoose.model('Question', Question);
