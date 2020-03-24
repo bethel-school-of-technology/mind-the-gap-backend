@@ -16,16 +16,15 @@ var cors = require('cors');
 var app = express();
 
 //models
-//require('./models/user');
-//require('./api/models/db');
-//require('./api/config/passport');
+require('./models/user');
+require('./models/Question');
+require('./models/assessment');
 
-
-
+// define route variables 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/api/users');
 var questionsRouter = require('./routes/api/questions');
-
+var assessmentsRouter = require('./routes/api/assessments');
 
 
 // view engine setup
@@ -62,6 +61,7 @@ db.on('error', console.error.bind(console, "'Mongo DB Connection Error'"))
 app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/questions', questionsRouter);
+app.use('/api/assessments', assessmentsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -13,11 +13,11 @@ var Question = new Schema({
 });
 
 
-//Make Schema additions/Changes below
+//Make Schema additions/Changes below in production
 
 
 
 //END OF SCHEMA ADDITIONS
 
 
-module.exports = mongoose.model('Question', Question)
+module.exports = mongoose.model('Question', Question);

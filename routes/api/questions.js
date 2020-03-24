@@ -55,7 +55,8 @@ questionRoute.put('/:id', function(req, res) {
 
 //Delete Action
 questionRoute.delete('/:id', function (req, res) {
-    Question.find({_id: req.params.id}). deleteOne({_id: req.params.id}, function(err, result) {
+    Question.find({_id: req.params.id}).
+    deleteOne({_id: req.params.id}, function(err, result) {
         if(err) {
             handleError(res, err.message, "Failed to delete quesiton");
         } else {
