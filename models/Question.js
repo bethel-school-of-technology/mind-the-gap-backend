@@ -7,7 +7,7 @@ var Question = new Schema({
     question_order: Number,
     question_text: String,
     question_type: String,
-    assessment_id: Number,
+    assessment_id: String,
     updated : {type: Date, default: Date.now() }
 
 });
