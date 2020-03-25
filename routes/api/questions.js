@@ -24,7 +24,7 @@ questionRoute.get('/:id', function(req, res) {
 });
 
 //Post Single Question
-questionRoute.post('/', function(req, res) {
+questionRoute.post('/', function(req, res, next) {
     Question.create({
         name: req.body.name,
         question_order: req.body.question_order,
