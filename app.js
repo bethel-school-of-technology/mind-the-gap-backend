@@ -33,7 +33,17 @@ app.set('view engine', 'jade');
 
 //passport setup
 app.use(passport.initialize());
-app.use('/api', routesApi);
+//app.use('/api', routesApi);
+//
+
+// Catch invalid JWT
+app.use(function (err, req, res, next) {
+  if (err.name === 'UnauthorizedError') {
+    res.status(401);
+    res.json({"message" : err.name + ": " + err.message});
+  }
+});
+//
 
 app.use(logger('dev'));
 app.use(express.json());
