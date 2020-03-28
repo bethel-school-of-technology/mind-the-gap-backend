@@ -8,6 +8,11 @@ var Question = new Schema({
     question_text: String,
     question_type: String,
     assessment_id: String,
+    answer_option: [{
+        option_text: String,
+        score: Number,
+        answer_bucket: String 
+    }],
     updated : {type: Date, default: Date.now() }
 
 });
