@@ -3,11 +3,10 @@ var Schema = mongoose.Schema;
 
 //Response Schema Table
 var Response = new Schema({
-    user_id: Number,
-    assessment_id: Number,
-    question_id: Number,
-    answer_option_id: Number, 
-    response: Boolean,
+    user_id: String,
+    assessment_id: String,
+    question_id: String,
+    answer_option_id: String, 
     updated : {type: Date, default: Date.now() }
 });
 

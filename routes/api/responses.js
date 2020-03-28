@@ -4,7 +4,7 @@ var route = express.Router();
 // Response Model
 var Response = require('../../models/response');
 
-// Get all respnoses
+// Get all responses
 route.get('/', function(req, res) {
     Response.find(function(err, doc) {
         if (err) return next(err);
@@ -29,13 +29,12 @@ route.get('/:id', function(req, res) {
 
 
 // Post response 
-route.post('/', function(req, res) {
+route.post('/', function(req, res, next) {
     Response.create({
     user_id: req.body.user_id,
     assessment_id: req.body.assessment_id,
     question_id: req.body.question_id,
     answer_option_id: req.body.answer_option_id,
-    response: req.body.response, 
     }, 
     function(err, doc) {
         if (err) return next(err);
