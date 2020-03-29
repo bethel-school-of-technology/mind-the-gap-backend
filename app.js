@@ -5,7 +5,7 @@ var path = require('path');
 var mongoose = require('mongoose');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var passport =require('passport');
+//var passport = require('passport');
 let devDbUser = process.env.DB_USER;
 let devDbPass = process.env.DB_PASS;
 let devDbHost = process.env.DB_HOST;
@@ -19,12 +19,19 @@ var app = express();
 require('./models/user');
 require('./models/Question');
 require('./models/assessment');
+require('./models/response');
+require('./api/config/passport');
+
+// require('./models/answer_option');
 
 // define route variables 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/api/users');
 var questionsRouter = require('./routes/api/questions');
 var assessmentsRouter = require('./routes/api/assessments');
+var responsesRouter = require('./routes/api/responses');
+// var answerOptionRouter = require('./routes/answer_options');
+
 
 
 // view engine setup
@@ -33,17 +40,7 @@ app.set('view engine', 'jade');
 
 //passport setup
 app.use(passport.initialize());
-//app.use('/api', routesApi);
-//
-
-// Catch invalid JWT
-app.use(function (err, req, res, next) {
-  if (err.name === 'UnauthorizedError') {
-    res.status(401);
-    res.json({"message" : err.name + ": " + err.message});
-  }
-});
-//
+app.use('/api', routesApi);
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -72,6 +69,8 @@ app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/questions', questionsRouter);
 app.use('/api/assessments', assessmentsRouter);
+app.use('/api/responses', responsesRouter);
+// app.use('/api/answer_options', answerOptionRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
