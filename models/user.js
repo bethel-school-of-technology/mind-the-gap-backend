@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 
+
 //User Schema Table
 //Mongoose automatically add _id property to schemas, don't add it yourself.
 const User = new Schema({

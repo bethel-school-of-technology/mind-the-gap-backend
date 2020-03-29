@@ -20,7 +20,7 @@ require('./models/user');
 require('./models/Question');
 require('./models/assessment');
 require('./models/response');
-require('./api/config/passport');
+//require('./api/config/passport');
 
 // require('./models/answer_option');
 
@@ -39,8 +39,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 //passport setup
-app.use(passport.initialize());
-app.use('/api', routesApi);
+//app.use(passport.initialize());
+//app.use('/api', routesApi);
 
 app.use(logger('dev'));
 app.use(express.json());
