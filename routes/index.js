@@ -8,7 +8,7 @@ var auth = jwt({
   userProperty: 'payload'
 });
 
-router.get('/login', auth, ctrlProfile.profileRead);
+//router.get('/profile', auth, ctrlProfile.profileRead);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {

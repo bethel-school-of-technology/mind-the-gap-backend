@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../../models/user');
+var authService = require('../../controllers/authentication');
+
 
 
 /* GET users listing. */
@@ -18,11 +20,58 @@ router.get('/:id', (req, res) => {
     res.json(user);
   });
 });
+// Create new user if one doesn't exist
+router.post('/signup', function(req, res, next) {
+  models.user
+    .findOrCreate({
+      where: {
+        Username: req.body.username
+      },
+      defaults: {
+        FirstName: req.body.firstName,
+        LastName: req.body.lastName,
+        Email: req.body.email,
+        Password: authService.hashPassword(req.body.password)
+      }
+    })
+    .spread(function(result, created) {
+      if (created) {
+        res.send('User successfully created');
+      } else {
+        res.send('This user already exists');
+      }
+    });
+});
 
+// Login user and return JWT as cookie
+router.post('/login', function (req, res, next) {
+  models.user.findOne({
+    where: {
+      Username: req.body.userName
+    }
+  }).then(user => {
+    if (!user) {
+      console.log('User not found')
+      return res.status(401).json({
+        message: "Login Failed"
+      });
+    } else {
+      let passwordMatch = authService.comparePasswords(req.body.password, user.Password);
+      if (passwordMatch) {
+        let token = authService.signUser(user); // <--- Uses the authService to create jwt token
+        res.cookie('jwt', token); // <--- Adds token to response as a cookie
+        res.send('Login successful');
+      } else {
+        console.log('Wrong password');
+        res.redirect('login')
+      }
+    }
+  });
+});
 
 //Create Action
 //url: http://localhost:5000/api/users?first_name=Test&last_name=User&email=example@gmail.com
-router.post('/', function (req, res) {
+/*router.post('/', function (req, res) {
    User.create({ 
     first_name: req.body.first_name,
     last_name: req.body.last_name,
@@ -32,7 +81,7 @@ router.post('/', function (req, res) {
     if (err) return next(err);
     res.json(doc);
   });
-});
+});*/
 
 //Update Action
 router.put('/:id', function (req, res) {
