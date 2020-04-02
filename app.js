@@ -14,12 +14,15 @@ var cors = require('cors');
 
 //Create global app object
 var app = express();
+app.use(cors());
 
 //models
 require('./models/user');
 require('./models/Question');
 require('./models/assessment');
 require('./models/response');
+//require('./api/config/passport');
+
 // require('./models/answer_option');
 
 // define route variables 
@@ -45,7 +48,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use(cors());
+//app.use(cors());
 
 //development only
 
