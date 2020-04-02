@@ -20,13 +20,14 @@ router.get('/:id', (req, res) => {
     res.json(user);
   });
 });
+
 // Create new user if one doesn't exist
 router.post('/signup', function(req, res, next) {
     const newUser = new User({
       first_name: req.body.first_name,
       last_name: req.body.last_name,
       email: req.body.email,
-      password: req.body.password
+      password: authService.hashPassword(req.body.password)
     })
     newUser.save().then(rec => {
       res.status(201).json(rec);
@@ -36,22 +37,29 @@ router.post('/signup', function(req, res, next) {
 
 // Login user and return JWT as cookie
 router.post('/login', function (req, res, next) {
-    User.findOne({email: req.body.email}).then(rec => {
-      if(!rec) {
-        return res.status(401).json({message: 'Invalid username or password'})
-      }
-      if(rec.password != res.body.password) {
-        return res.status(401).json({message: 'Invalid username or password'})
-      }
-      res.status(200).json(rec)
-    })
-  });
-  
-  router.get('/users', (req, res) => {
-    User.find().then(rec => {
-      res.status(200).json(rec)
-    })
-  });
+    User.findOne({
+      where: {
+      email: req.body.email
+        }
+      }).then(users => {
+      if(!users) {
+        console.log('User not found')
+        return res.status(401).json({
+          message: 'Invalid username or password'
+        });
+      } else {
+        let passwordMatch = authService.comparePasswords(req.body.password, user.password);
+        if (passwordMatch) {
+          let token = authService.signUser(user); //authService is creating jwt token
+          res.cookie('jwt', token); //token response to cookie
+          res.send('Login succesful');
+        } else {
+          console.log('Wrong Password');
+          res.redirect('/login')
+        }
+      } 
+      });
+      
   
 
 //Create Action
