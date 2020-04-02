@@ -22,52 +22,37 @@ router.get('/:id', (req, res) => {
 });
 // Create new user if one doesn't exist
 router.post('/signup', function(req, res, next) {
-  models.user
-    .findOrCreate({
-      where: {
-        Username: req.body.username
-      },
-      defaults: {
-        FirstName: req.body.firstName,
-        LastName: req.body.lastName,
-        Email: req.body.email,
-        Password: authService.hashPassword(req.body.password)
-      }
+    const newUser = new User({
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      email: req.body.email,
+      password: req.body.password
     })
-    .spread(function(result, created) {
-      if (created) {
-        res.send('User successfully created');
-      } else {
-        res.send('This user already exists');
-      }
-    });
-});
+    newUser.save().then(rec => {
+      res.status(201).json(rec);
+    })
+    
+  });
 
 // Login user and return JWT as cookie
 router.post('/login', function (req, res, next) {
-  models.user.findOne({
-    where: {
-      Username: req.body.userName
-    }
-  }).then(user => {
-    if (!user) {
-      console.log('User not found')
-      return res.status(401).json({
-        message: "Login Failed"
-      });
-    } else {
-      let passwordMatch = authService.comparePasswords(req.body.password, user.Password);
-      if (passwordMatch) {
-        let token = authService.signUser(user); // <--- Uses the authService to create jwt token
-        res.cookie('jwt', token); // <--- Adds token to response as a cookie
-        res.send('Login successful');
-      } else {
-        console.log('Wrong password');
-        res.redirect('login')
+    User.findOne({email: req.body.email}).then(rec => {
+      if(!rec) {
+        return res.status(401).json({message: 'Invalid username or password'})
       }
-    }
+      if(rec.password != res.body.password) {
+        return res.status(401).json({message: 'Invalid username or password'})
+      }
+      res.status(200).json(rec)
+    })
   });
-});
+  
+  router.get('/users', (req, res) => {
+    User.find().then(rec => {
+      res.status(200).json(rec)
+    })
+  });
+  
 
 //Create Action
 //url: http://localhost:5000/api/users?first_name=Test&last_name=User&email=example@gmail.com
