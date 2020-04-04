@@ -8,24 +8,33 @@ var Response = require('../../models/response');
 route.get('/', function(req, res) {
     Response.find(function(err, doc) {
         if (err) return next(err);
-        res.json(doc);
+        res.json(doc);               
     });
 });
 
 // Get response by ID 
-route.get('/:id', function(req, res) {
-    Response.findById(req.params.id, (err, doc) => { 
-        if (err) {
-            return next (err)
-        } else {
-            res.json(doc)
-        }
-    });
-});
+// route.get('/:id', function(req, res) {
+//     Response.findById(req.params.id, (err, doc) => { 
+//         if (err) {
+//             return next (err)
+//         } else {
+//             res.json(doc)
+//         }
+//     });
+// });
 
 // Get response by user id
 
-// Get response by assessment id
+// Get response by question id
+route.get('/:question_id', function(req, res) {
+    Response.find({_id: req.params.question_id}, (err, doc) => {
+        // if (err) {
+        //     return next (err)
+        // } else {
+        //     res.json(doc)
+        // }
+    });
+});
 
 
 // Post response 
