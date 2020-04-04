@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../../models/user');
-var authService = require('../../controllers/authentication');
+var authService = require('../../services/auth');
 
 
 
@@ -27,38 +27,44 @@ router.post('/signup', function(req, res, next) {
       first_name: req.body.first_name,
       last_name: req.body.last_name,
       email: req.body.email,
-      password: authService.hashPassword(req.body.password)
+      password: req.body.password,
     })
     newUser.save().then(rec => {
       res.status(201).json(rec);
     })
-    
   });
 
+  router.get('/signup', function(req, res, next) {
+    res.render('/signup');
+  })
+
 // Login user and return JWT as cookie
-router.post('/login', function (req, res, next) {
+router.post('/login', function (req, res, next) { 
+  console.log(req.body.email)
     User.findOne({
-      where: {
       email: req.body.email
-        }
-      }).then(users => {
-      if(!users) {
+      }).then(user => {
+        console.log(user)
+      if (!user) {
         console.log('User not found')
         return res.status(401).json({
           message: 'Invalid username or password'
         });
-      } else {
-        let passwordMatch = authService.comparePasswords(req.body.password, user.password);
+      } if (user) {
+        let passwordMatch = authService.comparePassword(req.body.password, user.password);
         if (passwordMatch) {
           let token = authService.signUser(user); //authService is creating jwt token
           res.cookie('jwt', token); //token response to cookie
           res.send('Login succesful');
+          //redirect render to dashboard
+          res.render('/dashboard');
         } else {
           console.log('Wrong Password');
           res.redirect('/login')
         }
-      } 
-      });
+      }
+    });
+});
       
   
 

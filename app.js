@@ -25,6 +25,9 @@ require('./models/response');
 
 // require('./models/answer_option');
 
+//services
+require('./services/auth');
+
 // define route variables 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/api/users');
@@ -71,6 +74,7 @@ app.use('/api/users', usersRouter);
 app.use('/api/questions', questionsRouter);
 app.use('/api/assessments', assessmentsRouter);
 app.use('/api/responses', responsesRouter);
+
 // app.use('/api/answer_options', answerOptionRouter);
 
 // catch 404 and forward to error handler
