@@ -13,8 +13,8 @@ route.get('/', function(req, res) {
 });
 
 // Get assessments by ID 
-route.get('/:id', function(req, res) {
-    Assessment.findById(req.params.id, (err, doc) => { 
+route.get('/assessment/:title', function(req, res) {
+    Assessment.findOne({title: req.params.title}, (err, doc) => { 
         if (err) {
             return next (err)
         } else {
