@@ -30,9 +30,8 @@ questionRoute.post('/', function(req, res, next) {
         question_order: req.body.question_order,
         question_text: req.body.question_text,
         question_type: req.body.question_type,
-        answer_option: req.body.answer_option,
-        answer_bucket: req.body.answer_bucket,
         assessment_id: req.body.assessment_id,
+        answer_options: req.body.answer_options
     }, 
     function(err, data) {
         if (err) return next(err);
