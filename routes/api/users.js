@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../../models/user');
-var authService = require('../../controllers/authentication');
+var authService = require('../../services/auth');
 
 
 
@@ -20,38 +20,52 @@ router.get('/:id', (req, res) => {
     res.json(user);
   });
 });
+
 // Create new user if one doesn't exist
 router.post('/signup', function(req, res, next) {
     const newUser = new User({
       first_name: req.body.first_name,
       last_name: req.body.last_name,
       email: req.body.email,
-      password: req.body.password
+      password: req.body.password,
     })
     newUser.save().then(rec => {
       res.status(201).json(rec);
     })
-    
   });
 
+  router.get('/signup', function(req, res, next) {
+    res.render('/signup');
+  })
+
 // Login user and return JWT as cookie
-router.post('/login', function (req, res, next) {
-    User.findOne({email: req.body.email}).then(rec => {
-      if(!rec) {
-        return res.status(401).json({message: 'Invalid username or password'})
+router.post('/login', function (req, res, next) { 
+  console.log(req.body.email)
+    User.findOne({
+      email: req.body.email
+      }).then(user => {
+        console.log(user)
+      if (!user) {
+        console.log('User not found')
+        return res.status(401).json({
+          message: 'Invalid username or password'
+        });
+      } if (user) {
+        let passwordMatch = authService.comparePassword(req.body.password, user.password);
+        if (passwordMatch) {
+          let token = authService.signUser(user); //authService is creating jwt token
+          res.cookie('jwt', token); //token response to cookie
+          res.send('Login succesful');
+          //redirect render to dashboard
+          res.render('/dashboard');
+        } else {
+          console.log('Wrong Password');
+          res.redirect('/login')
+        }
       }
-      if(rec.password != res.body.password) {
-        return res.status(401).json({message: 'Invalid username or password'})
-      }
-      res.status(200).json(rec)
-    })
-  });
-  
-  router.get('/users', (req, res) => {
-    User.find().then(rec => {
-      res.status(200).json(rec)
-    })
-  });
+    });
+});
+      
   
 
 //Create Action
