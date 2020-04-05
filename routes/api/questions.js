@@ -1,6 +1,7 @@
 var express = require('express');
 var questionRoute = express.Router();
 
+
 //Question model
 var Question = require('../../models/Question');
 
@@ -11,6 +12,18 @@ questionRoute.get('/', function(req, res) {
         res.json(data);
     });
 });
+
+
+// //Get Question by Question ID
+// questionRoute.get('/:id', function(req,res) {
+//     Question.findById(req.params.id, (err, data) => {
+//         if (err) {
+//             return next(err)
+//         } else {
+//             res.json(data)
+//         }
+//     });
+// });
 
 //Get Quesiton by Assessment ID
 questionRoute.get('/:id', function(req, res) {
