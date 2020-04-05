@@ -12,9 +12,9 @@ questionRoute.get('/', function(req, res) {
     });
 });
 
-//Get single Quesiton
+//Get Quesiton by Assessment ID
 questionRoute.get('/:id', function(req, res) {
-    Question.findById(req.params.id, (err, data) => {
+    Question.find({assessment_id: req.params.id}, (err, data) => {
         if (err) {
             return next(err)
         } else {
