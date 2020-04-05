@@ -15,11 +15,8 @@ questionRoute.get('/', function(req, res) {
 //Get single Quesiton
 questionRoute.get('/:id', function(req, res) {
     Question.findById(req.params.id, (err, data) => {
-        if (err) {
-            return next(err)
-        } else {
-            res.json(data)
-        }
+        // if (err) return next(err);
+        res.json(data);
     });
 });
 

@@ -27,12 +27,9 @@ route.get('/', function(req, res) {
 
 // Get response by question id
 route.get('/:question_id', function(req, res) {
-    Response.find({_id: req.params.question_id}, (err, doc) => {
-        // if (err) {
-        //     return next (err)
-        // } else {
-        //     res.json(doc)
-        // }
+    Response.find({question_id: req.params.question_id}, (err, doc) => {
+        if (err) return next(err);
+        res.json(doc);   
     });
 });
 
