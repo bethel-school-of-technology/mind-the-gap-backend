@@ -6,7 +6,7 @@ var authService = {
     const token = jwt.sign(
       {
         email : user.email,
-        password : user.password
+        _id : user._id
       },
       'secretkey',
       {

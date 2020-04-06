@@ -14,12 +14,29 @@ router.get('/', function(req, res) {
 });
 
 /* GET an user by id listing. */
-router.get('/:id', (req, res) => {
-  User.find({_id: req.params.id}, (err, user) => {
-    if (err) return next(err);
-    res.json(user);
+//OLD LOGIC 
+// router.get('/:id', (req, res) => {
+//   User.find({_id: req.params.id}, (err, user) => {
+//     if (err) return next(err);
+//     res.json(user);
+//   });
+// });
+
+router.get('/profile/:id', function (req, res, next) {
+  models.users
+    .findByPk(req.params.id)
+    .then(user => {
+      if (user) {
+        res.render('profile', {
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+        });
+      } else {
+        res.send('User not found');
+      }
+    });
   });
-});
 
 // Create new user if one doesn't exist
 router.post('/signup', function(req, res, next) {
@@ -37,6 +54,22 @@ router.post('/signup', function(req, res, next) {
   router.get('/signup', function(req, res, next) {
     res.render('/signup');
   })
+
+// Finding one User
+  router.put('/profile_edit/:id', function(req, res, next) {
+    console.log(res.cookie);
+    User.findOneAndUpdate({
+      "_id": req.params.id
+    },
+      req.body,
+      {
+        upsert: false
+      },
+      function(err, doc) { 
+        if (err) return res.send(500, {error: err});  
+        return res.send('Succesfully saved.'); 
+    })
+  });
 
 // Login user and return JWT as cookie
 router.post('/login', function (req, res, next) { 
