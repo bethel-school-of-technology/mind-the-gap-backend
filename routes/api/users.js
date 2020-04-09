@@ -72,22 +72,27 @@ router.post('/signup', function(req, res, next) {
   });
 
   router.post('/login', function (req, res, next) {
-   Users.findOne({
+    console.log(req.body.email);
+    User.findOne({
       where: {
         email: req.body.email
       }
     }).then(user => {
       if (!user) {
-        console.log('User not found')
+        console.log('User not found');
+        console.log(user);
         return res.status(401).json({
           message: "Login Failed"
         });
       } else {
+        console.log('GOT TO LOG IN ROUTE> WOOT');
         let passwordMatch = authService.comparePasswords(req.body.password, user.Password);
         if (passwordMatch) {
-          let token = authService.signUser(user);
+          console.log('password MATCHED!!!! AYOOOOLOOO O O');
+          let token = authService.signUser(user); 
           res.cookie('jwt', token);
           res.send('Login successful');
+          console.log(err);
         } else {
           console.log('Wrong password');
           res.send('Wrong password');
@@ -95,7 +100,8 @@ router.post('/signup', function(req, res, next) {
       }
     });
   });
-// //Login user and return JWT as cookie
+
+//Login user and return JWT as cookie
 // router.post('/login', function (req, res) { 
 //   console.log(req.body.email);
 //     User.findOne({
