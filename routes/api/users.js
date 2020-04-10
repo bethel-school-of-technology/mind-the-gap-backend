@@ -74,9 +74,7 @@ router.post('/signup', function(req, res, next) {
   router.post('/login', function (req, res, next) {
     console.log(req.body.email);
     User.findOne({
-      where: {
         email: req.body.email
-      }
     }).then(user => {
       if (!user) {
         console.log('User not found');
@@ -85,14 +83,13 @@ router.post('/signup', function(req, res, next) {
           message: "Login Failed"
         });
       } else {
-        console.log('GOT TO LOG IN ROUTE> WOOT');
-        let passwordMatch = authService.comparePasswords(req.body.password, user.Password);
+        console.log("GOT TO LOG IN ROUTE WOOT");
+        let passwordMatch = authService.comparePasswords(req.body.password, user.password);
         if (passwordMatch) {
-          console.log('password MATCHED!!!! AYOOOOLOOO O O');
-          let token = authService.signUser(user); 
+          console.log("password MATCHED");
+        let token = authService.signUser(user);
           res.cookie('jwt', token);
           res.send('Login successful');
-          console.log(err);
         } else {
           console.log('Wrong password');
           res.send('Wrong password');
