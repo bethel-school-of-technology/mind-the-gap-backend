@@ -74,8 +74,8 @@ router.post('/signup', function(req, res, next) {
   router.post('/login', function (req, res, next) {
     console.log(req.body.email);
     User.findOne({
-        email: req.body.email
-    }).then(user => {
+        "email": req.body.email
+    }).then(function(user) {
       if (!user) {
         console.log('User not found');
         console.log(user);
@@ -87,12 +87,16 @@ router.post('/signup', function(req, res, next) {
         let passwordMatch = authService.comparePasswords(req.body.password, user.password);
         if (passwordMatch) {
           console.log("password MATCHED");
-        let token = authService.signUser(user);
+          let token = authService.signUser(user);
           res.cookie('jwt', token);
-          res.send('Login successful');
+          return res.status(200).json({
+            message: "Login Successful"
+          });
         } else {
           console.log('Wrong password');
-          res.send('Wrong password');
+          return res.status(401).json({
+            message: "Wrong Credentials."
+          });
         }
       }
     });

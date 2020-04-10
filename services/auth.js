@@ -6,12 +6,12 @@ var authService = {
   signUser: function(user) {
     const token = jwt.sign(
       {
-        email : user.email,
-        _id : user._id
+        "email": user.email,
+        "_id": user._id
       },
       'secretkey',
       {
-        expiresIn: '1h'
+        "expiresIn": '1h'
       }
     );
     return token;
