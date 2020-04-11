@@ -61,6 +61,7 @@ let mongodb = process.env.MONGODB_URI || connection;
 //app.user(express.errorHandler());
 mongoose.connect(mongodb, {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.Promise = global.Promise;
+mongoose.set('useFindAndModify', false);
 
 let db = mongoose.connection;
 

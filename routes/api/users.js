@@ -14,12 +14,29 @@ router.get('/', function(req, res) {
 });
 
 /* GET an user by id listing. */
-router.get('/:id', (req, res) => {
-  User.find({_id: req.params.id}, (err, user) => {
-    if (err) return next(err);
-    res.json(user);
+//OLD LOGIC 
+// router.get('/:id', (req, res) => {
+//   User.find({_id: req.params.id}, (err, user) => {
+//     if (err) return next(err);
+//     res.json(user);
+//   });
+// });
+
+router.get('/profile/:id', function (req, res, next) {
+  models.users
+    .findByPk(req.params.id)
+    .then(user => {
+      if (user) {
+        res.render('profile', {
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+        });
+      } else {
+        res.send('User not found');
+      }
+    });
   });
-});
 
 // Create new user if one doesn't exist
 router.post('/signup', function(req, res, next) {
@@ -27,7 +44,7 @@ router.post('/signup', function(req, res, next) {
       first_name: req.body.first_name,
       last_name: req.body.last_name,
       email: req.body.email,
-      password: req.body.password,
+      password: authService.hashPassword(req.body.password),
     })
     newUser.save().then(rec => {
       res.status(201).json(rec);
@@ -38,51 +55,76 @@ router.post('/signup', function(req, res, next) {
     res.render('/signup');
   })
 
-// Login user and return JWT as cookie
-router.post('/login', function (req, res, next) { 
-  console.log(req.body.email)
+// Finding one User
+  router.put('/profile_edit/:id', function(req, res, next) {
+    console.log(res.cookie);
+    User.findOneAndUpdate({
+      "_id": req.params.id
+    },
+      req.body,
+      {
+        upsert: false
+      },
+      function(err, doc) { 
+        if (err) return res.send(500, {error: err});  
+        return res.send('Succesfully saved.'); 
+    })
+  });
+
+  router.post('/login', function (req, res, next) {
+    console.log(req.body.email);
     User.findOne({
-      email: req.body.email
-      }).then(user => {
-        console.log(user)
+        "email": req.body.email
+    }).then(function(user) {
       if (!user) {
-        console.log('User not found')
+        console.log('User not found');
+        console.log(user);
         return res.status(401).json({
-          message: 'Invalid username or password'
+          message: "Login Failed"
         });
-      } if (user) {
-        let passwordMatch = authService.comparePassword(req.body.password, user.password);
+      } else {
+        console.log("GOT TO LOG IN ROUTE WOOT");
+        let passwordMatch = authService.comparePasswords(req.body.password, user.password);
         if (passwordMatch) {
-          let token = authService.signUser(user); //authService is creating jwt token
-          res.cookie('jwt', token); //token response to cookie
-          res.send('Login succesful');
-          //redirect render to dashboard
-          res.render('/dashboard');
+          console.log("password MATCHED");
+          let token = authService.signUser(user);
+          res.cookie('jwt', token);
+          return res.status(200).json({
+            message: "Login Successful", 
+            token: token
+          });
         } else {
-          console.log('Wrong Password');
-          res.redirect('/login')
+          console.log('Wrong password');
+          return res.status(401).json({
+            message: "Wrong Credentials."
+          });
         }
       }
     });
-});
-      
-  
+  });
+
+  router.get('/logout', function (req, res, next) {
+    console.log("logged OUT");
+    //res.cookie('jwt', "", { expires: new Date(0) });//
+    //res.send('Logged out');//
+    });
+
 
 //Create Action
 //url: http://localhost:5000/api/users?first_name=Test&last_name=User&email=example@gmail.com
-/*router.post('/', function (req, res) {
-   User.create({ 
-    first_name: req.body.first_name,
-    last_name: req.body.last_name,
-    email: req.body.email
-  }, 
-  function(err, doc) {
-    if (err) return next(err);
-    res.json(doc);
-  });
-});*/
+//router.post('/', function (req, res) {
+//    User.create({ 
+//     first_name: req.body.first_name,
+//     last_name: req.body.last_name,
+//     email: req.body.email
+//   }, 
+//   function(err, doc) {
+//     if (err) return next(err);
+//     res.json(doc);
+//   });
+// });
 
-//Update Action
+
 router.put('/:id', function (req, res) {
   var updateDoc = req.body;
   delete updateDoc._id;
