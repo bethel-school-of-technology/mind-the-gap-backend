@@ -23,20 +23,18 @@ router.get('/', function(req, res) {
 // });
 
 router.get('/profile/:id', function (req, res, next) {
-  models.users
-    .findByPk(req.params.id)
-    .then(user => {
-      if (user) {
-        res.render('profile', {
-          first_name: user.first_name,
-          last_name: user.last_name,
-          email: user.email,
-        });
-      } else {
-        res.send('User not found');
-      }
-    });
+  // console.log("Parameters:");
+  // console.log(req.params.id);
+  User.findOne({_id: req.params.id}, (err, doc) => { 
+    if (err) {
+        return next (err)
+    } else {
+      // console.log("User info:");
+      //   console.log(doc);
+        res.json(doc);
+    }
   });
+});
 
 // Create new user if one doesn't exist
 router.post('/signup', function(req, res, next) {
@@ -83,18 +81,18 @@ router.post('/signup', function(req, res, next) {
           message: "Login Failed"
         });
       } else {
-        console.log("GOT TO LOG IN ROUTE WOOT");
+        // console.log("GOT TO LOG IN ROUTE WOOT");
         let passwordMatch = authService.comparePasswords(req.body.password, user.password);
         if (passwordMatch) {
-          console.log("password MATCHED");
+          // console.log("password MATCHED");
           let token = authService.signUser(user);
           res.cookie('jwt', token);
           return res.status(200).json({
-            message: "Login Successful", 
+            message: "Login Successful",
             token: token
           });
         } else {
-          console.log('Wrong password');
+          // console.log('Wrong password');
           return res.status(401).json({
             message: "Wrong Credentials."
           });
@@ -103,28 +101,52 @@ router.post('/signup', function(req, res, next) {
     });
   });
 
-  router.get('/logout', function (req, res, next) {
-    console.log("logged OUT");
-    //res.cookie('jwt', "", { expires: new Date(0) });//
-    //res.send('Logged out');//
-    });
+//Login user and return JWT as cookie
+// router.post('/login', function (req, res) { 
+//   console.log(req.body.email);
+//     User.findOne({
+//       email: req.body.email
+//     }
+//       }).then(user => {
+//         console.log(user)
+//       if (!user) {
+//         console.log('User not found')
+//         return res.status(401).json({
+//           message : "Invalid username or password"
+//         });
+//       } else {
+//         let passwordMatch = authService.comparePasswords(req.body.password, user.password);
+//         if (passwordMatch) {
+//           let token = authService.signUser(user); 
+//           res.cookie('jwt', token); 
+//           res.send('Login succesful')
+//         } else {
+//           console.log('Wrong Password');
+//           res.send('Wrong Password');
+//         }
+//       }
+    
+//     });
+// });
+      
+  
 
 
 //Create Action
 //url: http://localhost:5000/api/users?first_name=Test&last_name=User&email=example@gmail.com
-//router.post('/', function (req, res) {
-//    User.create({ 
-//     first_name: req.body.first_name,
-//     last_name: req.body.last_name,
-//     email: req.body.email
-//   }, 
-//   function(err, doc) {
-//     if (err) return next(err);
-//     res.json(doc);
-//   });
-// });
+/*router.post('/', function (req, res) {
+   User.create({ 
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    email: req.body.email
+  }, 
+  function(err, doc) {
+    if (err) return next(err);
+    res.json(doc);
+  });
+});*/
 
-
+//Update Action
 router.put('/:id', function (req, res) {
   var updateDoc = req.body;
   delete updateDoc._id;
