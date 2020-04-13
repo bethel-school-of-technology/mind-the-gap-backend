@@ -1,36 +1,62 @@
 var express = require('express');
+var mongoose = require('mongoose');
 var router = express.Router();
 
 var Response = require('../../models/response');
-var User = require('../../models/user');
+var User = mongoose.model('User');
+var Question = mongoose.model('Question');
 
-router.get('/', function (req, res) {
-    Response.find(function (err, doc) {
-        if (err) res.send(err);
-        res.json(doc);
-    });
-});
+// router.get('/', function (req, res) {
+//     Response.find(function (err, doc) {
+//         if (err) res.send(err);
+//         res.json(doc);
+//     });
+// });
 
 //Get responses by assessment id and user id
-router.get('/:assessment_id/:user_id', function (req, res) {
-    // const answerOptionArray = any,
-    console.log('trying to find response', req.params)
-    Response.find({ assessment_id: req.body.assessment_id, user_id: req.body.user_id }, function (err, doc) {
+router.get('/', async function (req, res) {
+    const answerOptionArray = [];
+    console.log("Got to Route");
+    Response.find({ assessment_id: req.body.assessment_id, user_id: req.body.user_id }, function (err, responses) {
         console.log('assessment id: ');
-        console.log(req.body);
+        console.log(req.body.assessment_id);
+        console.log("Response Array:");
+        console.log(responses);
+        responses.forEach(async response  => {
+            console.log("Got a Response:");
+            console.log(response);
+            // let user_response = await Question.findOne({_id: response.question_id, 'answer_options._id': response.answer_option_id});
+            let user_response = await Question.findOne({'answer_options._id': response.answer_option_id});
+            console.log("Response Spacer:")
+            // console.log(user_response.answer_options);
+            user_response.answer_options.forEach(answer_option => {
+                if(answer_option._id == response.answer_option_id) {
+                    console.log(answer_option.answer_bucket);
+                    answerOptionArray.push(answer_option.answer_bucket);
+                }
+            });
+
+            // array.push(user_response.value);
+
+            // Question.findOne({_id: response.question_id}), function (err, question) {
+                
+            //     console.log("Got A Question:");
+            //     console.log(question);
+
+            //     if (err) {
+            //         res.send(err);
+            //     }
+
+            // }
+            
+        });
+
         if (err) {
             res.send(err);
         }
-        console.log(doc);
-        res.json(doc);
-
-        //     identify which bucket received the most responses 
-        //         {
-        //             Question.findeOne({_id: response.question_id}){
-        //                 answerOptionArray
-        //             }
-        //         }
-        //     })
+        console.log("Got to end of Route:");
+        console.log(answerOptionArray);
+        res.json(responses);
     });
 });
 
