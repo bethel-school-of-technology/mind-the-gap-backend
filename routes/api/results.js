@@ -1,23 +1,32 @@
 var express = require('express');
+var mongoose = require('mongoose');
 var router = express.Router();
 
 var Response = require('../../models/response');
-var User = require('../../models/user');
+var User = mongoose.model('User');
+var Question = mongoose.model('Question');
 
-router.get('/', function (req, res) {
-    Response.find(function (err, doc) {
-        if (err) res.send(err);
-        res.json(doc);
-    });
-});
+// router.get('/', function (req, res) {
+//     Response.find(function (err, doc) {
+//         if (err) res.send(err);
+//         res.json(doc);
+//     });
+// });
 
 //Get responses by assessment id and user id
-router.get('/:assessment_id/:user_id', function (req, res) {
+router.get('/', function (req, res) {
     // const answerOptionArray = any,
-    console.log('trying to find response', req.params)
-    Response.find({ assessment_id: req.body.assessment_id, user_id: req.body.user_id }, function (err, doc) {
+    Response.find({ assessment_id: req.body.assessment_id, user_id: req.body.user_id }, function (err, responses) {
         console.log('assessment id: ');
-        console.log(req.body);
+        console.log('Resonse Array:');
+        console.log(responses);
+        responses.forEach(response => {
+           Question.findOne({_id: response.question_id}), function(err, question) {
+               console.log('got to question');
+               console.log(question);
+           } 
+        });
+
         if (err) {
             res.send(err);
         }
