@@ -17,34 +17,41 @@ var Question = mongoose.model('Question');
 router.get('/', async function (req, res) {
     const answerOptionArray = [];
     console.log("Got to Route");
-    Response.find({ assessment_id: req.body.assessment_id, user_id: req.body.user_id }, function (err, responses) {
-        console.log('assessment id: ');
-        console.log(req.body.assessment_id);
-        console.log("Response Array:");
-        console.log(responses);
-        responses.forEach(async response  => {
-            console.log("Got a Response:");
-            console.log(response);
-            // let user_response = await Question.findOne({_id: response.question_id, 'answer_options._id': response.answer_option_id});
-            let user_response = await Question.findOne({'answer_options._id': response.answer_option_id});
-            console.log("Response Spacer:")
-            // console.log(user_response.answer_options);
-            user_response.answer_options.forEach(answer_option => {
-                if(answer_option._id == response.answer_option_id) {
-                    console.log(answer_option.answer_bucket);
-                    answerOptionArray.push(answer_option.answer_bucket);
-                }
-            });
-        });
+    
+    function processData (callback) {
 
-        if (err) {
-            res.send(err);
-        }
-        console.log("Got to end of Route:");
-        console.log(answerOptionArray);
-        res.json(responses);
-    });
+        Response.find({ assessment_id: req.body.assessment_id, user_id: req.body.user_id }, function (err, responses) {
+            console.log('assessment id: ');
+            console.log(req.body.assessment_id);
+            console.log("Response Array:");
+            console.log(responses);
+            responses.forEach(async response  => {
+                console.log("Got a Response:");
+                console.log(response);
+                // let user_response = await Question.findOne({_id: response.question_id, 'answer_options._id': response.answer_option_id});
+                let user_response = await Question.findOne({'answer_options._id': response.answer_option_id});
+                console.log("Response Spacer:")
+                // console.log(user_response.answer_options);
+                user_response.answer_options.forEach( answer_option => {
+                    if(answer_option._id == response.answer_option_id) {
+                        console.log(answer_option.answer_bucket);
+                        answerOptionArray.push(answer_option.answer_bucket);
+                    }
+                callback(answerOptionArray);  
+                       
+                });
+            });
+            
+        });
+    }
+
+    console.log("Here is your array End of Route!");
+    console.log(processData);
+    res.json(answerOptionArray);
 });
+
+
+
 
 //experimenting with route
 // router.get('/:assessment_id/:user_id', function (req, res) {
