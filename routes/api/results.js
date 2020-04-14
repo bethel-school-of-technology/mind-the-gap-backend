@@ -18,35 +18,35 @@ router.get('/', async function (req, res) {
 
     console.log("Got to Route");
 
-        Response.find({ assessment_id: req.body.assessment_id, user_id: req.body.user_id }, function (err, responses) {
-            console.log('assessment id: ');
-            console.log(req.body.assessment_id);
-            console.log("Response Array:");
-            console.log(responses);
-            responses.forEach(async response  => {
-                console.log("Got a Response:");
-                console.log(response);
-                // let user_response = await Question.findOne({_id: response.question_id, 'answer_options._id': response.answer_option_id});
-                let user_response = await Question.findOne({'answer_options._id': response.answer_option_id});
-                let answerOptionArray = [];
-                console.log("Response Spacer:");
-                console.log(user_response);
-               console.log(user_response.answer_options);
-                user_response.answer_options.forEach( answer_option => {
-                    if(answer_option._id == response.answer_option_id) {
-                        console.log(answer_option.answer_bucket);
-                        answerOptionArray.push(answer_option.answer_bucket);
-                    }  
-                       
-                
-             });
-                res.json(answerOptionArray);
+    Response.find({ assessment_id: req.body.assessment_id, user_id: req.body.user_id }, function (err, responses) {
+        console.log('assessment id: ');
+        console.log(req.body.assessment_id);
+        console.log("Response Array:");
+        console.log(responses);
+        responses.forEach(async response => {
+            console.log("Got a Response:");
+            console.log(response);
+            // let user_response = await Question.findOne({_id: response.question_id, 'answer_options._id': response.answer_option_id});
+            let user_response = await Question.findOne({ 'answer_options._id': response.answer_option_id });
+            let answerOptionArray = [];
+            console.log("Response Spacer:");
+            console.log(user_response);
+            console.log(user_response.answer_options);
+            user_response.answer_options.forEach(answer_option => {
+                if (answer_option._id == response.answer_option_id) {
+                    console.log(answer_option.answer_bucket);
+                    answerOptionArray.push(answer_option.answer_bucket);
+                }
+
+
             });
+            res.json(answerOptionArray);
+        });
     });
 
     console.log("Here is your array End of Route!");
     console.log(processData);
-    
+
 });
 
 
