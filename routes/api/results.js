@@ -88,6 +88,29 @@ router.get('/', async function (req, res) {
 
 
 
+function matchBucket1() { 
+    var bucket1 = "Bucket One"; 
+    var result1 = bucket1.match(/eek/i); 
+    document.write("Output : " + result1); 
+} matchBucket1(); 
+
+function matchBucket2() { 
+    var bucket2 = "Bucket Two"; 
+    var result2 = bucket2.match(/eek/i); 
+    document.write("Output : " + result2); 
+} matchBucket2(); 
+
+function matchBucket3() { 
+    var bucket3 = "Bucket Three"; 
+    var result3 = bucket3.match(/eek/i); 
+    document.write("Output : " + result3); 
+} matchBucket3(); 
+
+function matchBucket4() { 
+    var bucket4 = "Bucket Four"; 
+    var result4 = bucket4.match(/eek/i); 
+    document.write("Output : " + result4); 
+} matchBucket4(); 
 
 //experimenting with route
 // router.get('/:assessment_id/:user_id', function (req, res) {
