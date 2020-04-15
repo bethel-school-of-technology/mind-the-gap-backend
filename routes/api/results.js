@@ -35,7 +35,7 @@ router.get('/', async function (req, res) {
             // console.log(req.body.assessment_id);
             // console.log("Response Array:");
             // console.log(responses);
-            responses.forEach(async response  => {
+            responses.forEach( async response  => {
             // console.log("Got a Response:");
             // console.log(response);
             // let user_response = await Question.findOne({_id: response.question_id, 'answer_options._id': response.answer_option_id});
