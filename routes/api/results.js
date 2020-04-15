@@ -107,6 +107,21 @@ router.get('/', async function (req, res) {
                     console.log(bucketThree);
                     console.log(bucketFour);
                     console.log(bucketFive);
+                    if ( bucketOne >= bucketTwo ) {
+                        return res.json ('Bucket One');
+                    }
+                    else if ( bucketTwo >= bucketThree ) {
+                        return res.json ('Bucket Two');
+                    }
+                    else if ( bucketThree >= bucketFour ) {
+                        return res.json ('Bucket Three');
+                    }
+                    else if ( bucketFour >= bucketFive ) {
+                        return res.json ('Bucket Four');
+                    }
+                    else {
+                        return res.json ('Bucket Five');
+                    }
             });
         } catch (err) {
             console.log(err);
@@ -117,7 +132,7 @@ router.get('/', async function (req, res) {
         console.log("Array Values:");
         console.log(answerOptionArray);
         console.log("Here is your array End of Route!");
-        res.json("Got Here!")
+        // res.json("Got Here!")
     }
 
     run();
