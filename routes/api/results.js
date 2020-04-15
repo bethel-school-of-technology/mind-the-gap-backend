@@ -14,7 +14,7 @@ var Question = mongoose.model('Question');
 // });
 
 //Get responses by assessment id and user id
-router.get('/', async function (req, res) {
+router.post('/', async function (req, res) {
 
     console.log("run function begin:");
     const answerOptionArray = [];
