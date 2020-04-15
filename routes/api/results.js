@@ -31,26 +31,26 @@ router.get('/', async function (req, res) {
         console.log("Start Build Array")
         return new Promise(resolve => {
             Response.find({ assessment_id: req.body.assessment_id, user_id: req.body.user_id }, function (err, responses) {
-            // console.log('assessment id: ');
-            // console.log(req.body.assessment_id);
-            // console.log("Response Array:");
-            // console.log(responses);
-            responses.forEach( async response  => {
-            // console.log("Got a Response:");
-            // console.log(response);
-            // let user_response = await Question.findOne({_id: response.question_id, 'answer_options._id': response.answer_option_id});
-            let user_response = await Question.findOne({'answer_options._id': response.answer_option_id});
-            // console.log("Response Spacer:");
-            // console.log(user_response);
-            //console.log(user_response.answer_options);
-                user_response.answer_options.forEach( answer_option => {
-                    if(answer_option._id == response.answer_option_id) {
-                        // console.log(answer_option.answer_bucket);
-                        answerOptionArray.push(answer_option.answer_bucket);
-                        console.log("Array build in process");
-                        console.log(answerOptionArray);
-                    }  
-                });
+                // console.log('assessment id: ');
+                // console.log(req.body.assessment_id);
+                // console.log("Response Array:");
+                // console.log(responses);
+                responses.forEach(async response => {
+                    // console.log("Got a Response:");
+                    // console.log(response);
+                    // let user_response = await Question.findOne({_id: response.question_id, 'answer_options._id': response.answer_option_id});
+                    let user_response = await Question.findOne({ 'answer_options._id': response.answer_option_id });
+                    // console.log("Response Spacer:");
+                    // console.log(user_response);
+                    //console.log(user_response.answer_options);
+                    user_response.answer_options.forEach(answer_option => {
+                        if (answer_option._id == response.answer_option_id) {
+                            // console.log(answer_option.answer_bucket);
+                            answerOptionArray.push(answer_option.answer_bucket);
+                            console.log("Array build in process");
+                            console.log(answerOptionArray);
+                        }
+                    });
                     console.log("array length compare:");
                     console.log(answerOptionArray.length);
                     console.log(responses.length);
@@ -60,20 +60,57 @@ router.get('/', async function (req, res) {
                         console.log("Array Built:");
                         console.log(answerOptionArray);
                         resolve(answerOptionArray);
-                    }    
-            });
+                    }
+                });
 
+            });
         });
-    });
     }
 
     function buildResult(answerOptionArray) {
-        return new Promise(resolve => {
-        console.log("Build Result:");
-        console.log(answerOptionArray);
-        //build results here
-        resolve();
-        });
+        try {
+            return new Promise(resolve => {
+                console.log("Build Result:");
+                console.log(answerOptionArray);
+                var bucketOne = 0;
+                var bucketTwo = 0;
+                var bucketThree = 0;
+                var bucketFour = 0;
+                var bucketFive = 0;
+
+                answerOptionArray.forEach(async answer => {
+                    if ("Bucket One" == answer) {
+                        bucketOne += 1;
+                    }
+
+                    if ("Bucket Two" == answer) {
+                        bucketTwo += 1;
+                    }
+
+                    if ("Bucket Three" == answer) {
+                        bucketThree += 1;
+                    }
+
+                    if ("Bucket Four" == answer) {
+                        bucketFour += 1;
+                    }
+
+                    if ("Bucket Five" == answer) {
+                        bucketFive += 1;
+                    }
+                    //build results here
+                    resolve();
+                });
+                    console.log("Bucket Values:")
+                    console.log(bucketOne);
+                    console.log(bucketTwo);
+                    console.log(bucketThree);
+                    console.log(bucketFour);
+                    console.log(bucketFive);
+            });
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     function sendResult(answerOptionArray) {
@@ -81,36 +118,37 @@ router.get('/', async function (req, res) {
         console.log(answerOptionArray);
         console.log("Here is your array End of Route!");
         res.json("Got Here!")
-    }  
+    }
 
     run();
 });
 
 
 
-function matchBucket1() { 
-    var bucket1 = "Bucket One"; 
-    var result1 = bucket1.match(/eek/i); 
-    document.write("Output : " + result1); 
-} matchBucket1(); 
+// function matchBucket1() {
+//     var bucket1 = "Bucket One";
+//     if (bucket1 == )
+//         var result1 = bucket1.match(/eek/i);
+//     // document.write("Output : " + result1); 
+// } matchBucket1();
 
-function matchBucket2() { 
-    var bucket2 = "Bucket Two"; 
-    var result2 = bucket2.match(/eek/i); 
-    document.write("Output : " + result2); 
-} matchBucket2(); 
+// function matchBucket2() {
+//     var bucket2 = "Bucket Two";
+//     var result2 = bucket2.match(/eek/i);
+//     document.write("Output : " + result2);
+// } matchBucket2();
 
-function matchBucket3() { 
-    var bucket3 = "Bucket Three"; 
-    var result3 = bucket3.match(/eek/i); 
-    document.write("Output : " + result3); 
-} matchBucket3(); 
+// function matchBucket3() {
+//     var bucket3 = "Bucket Three";
+//     var result3 = bucket3.match(/eek/i);
+//     document.write("Output : " + result3);
+// } matchBucket3();
 
-function matchBucket4() { 
-    var bucket4 = "Bucket Four"; 
-    var result4 = bucket4.match(/eek/i); 
-    document.write("Output : " + result4); 
-} matchBucket4(); 
+// function matchBucket4() {
+//     var bucket4 = "Bucket Four";
+//     var result4 = bucket4.match(/eek/i);
+//     document.write("Output : " + result4);
+// } matchBucket4();
 
 //experimenting with route
 // router.get('/:assessment_id/:user_id', function (req, res) {
