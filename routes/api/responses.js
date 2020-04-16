@@ -68,6 +68,24 @@ route.post('/', async (req, res) => {
     res.status(201).json("Successfully saved your answers!");
 });
 
+// Get Response via user_id
+route.post('/:user_id', async (req, res) => {
+    try {
+        await Response.findOne({user_id: req.params.user_id}, async function (err, result) {
+            if (result) {
+                console.log("result:")
+                console.log(result);
+                return res.status(200).json(result);
+            } else {
+                return res.status(200).json("No Assessment Taken");
+            }
+        })
+    } catch (err) {
+        console.log(err);
+        res.json(err);
+    }  
+});
+
 // Update response
 route.put('/:id', function (req, res) {
     var updateResponse = req.body;
