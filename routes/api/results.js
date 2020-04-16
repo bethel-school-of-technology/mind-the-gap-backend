@@ -95,7 +95,7 @@ router.post('/', async function (req, res) {
                         bucketFour += 1;
                     }
 
-                    if ("Bucket five" == answer) {
+                    if ("Bucket Five" == answer) {
                         bucketFive += 1;
                     }
                     //build results here
