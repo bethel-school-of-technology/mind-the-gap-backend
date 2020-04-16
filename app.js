@@ -34,6 +34,7 @@ var usersRouter = require('./routes/api/users');
 var questionsRouter = require('./routes/api/questions');
 var assessmentsRouter = require('./routes/api/assessments');
 var responsesRouter = require('./routes/api/responses');
+var resultsRouter = require('./routes/api/results');
 // var answerOptionRouter = require('./routes/answer_options');
 
 
@@ -75,6 +76,7 @@ app.use('/api/users', usersRouter);
 app.use('/api/questions', questionsRouter);
 app.use('/api/assessments', assessmentsRouter);
 app.use('/api/responses', responsesRouter);
+app.use('/api/results', resultsRouter);
 
 // app.use('/api/answer_options', answerOptionRouter);
 
