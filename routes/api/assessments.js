@@ -12,10 +12,21 @@ route.get('/', function(req, res) {
     });
 });
 
-// Get assessments by ID 
+// Get assessments by Title
 route.get('/assessment/:title', function(req, res) {
     Assessment.findOne({title: req.params.title}, (err, doc) => { 
         if (err) {
+            return next (err)
+        } else {
+            res.json(doc)
+        }
+    });
+});
+
+//get assessment by Id
+route.get('/assessment/:id', function(req, res) {
+    Assessment.findById( _id, function(err, doc) {
+        if(err) {
             return next (err)
         } else {
             res.json(doc)
