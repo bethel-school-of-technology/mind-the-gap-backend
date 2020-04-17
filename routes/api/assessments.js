@@ -24,15 +24,15 @@ route.get('/assessment/:title', function(req, res) {
 });
 
 //get assessment by Id
-route.get('/assessment/:id', function(req, res) {
-    Assessment.findById( _id, function(err, doc) {
-        if(err) {
-            return next (err)
-        } else {
-            res.json(doc)
-        }
-    });
-});
+// route.get('/assessment/:id', function(req, res) {
+//     Assessment.findById( _id, function(err, doc) {
+//         if(err) {
+//             return next (err)
+//         } else {
+//             res.json(doc)
+//         }
+//     });
+// });
 
 // Post assessment 
 route.post('/', function(req, res) {
