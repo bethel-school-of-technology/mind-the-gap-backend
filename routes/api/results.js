@@ -107,13 +107,13 @@ router.post('/', async function (req, res) {
                     console.log(bucketThree);
                     console.log(bucketFour);
                     console.log(bucketFive);
-                    if ( bucketOne >= bucketTwo ) {
+                    if ( bucketOne >= bucketTwo && bucketOne >= bucketThree && bucketOne >= bucketFour && bucketOne >= bucketFive ) {
                         return res.json ('Bucket One');
                     }
-                    else if ( bucketTwo >= bucketThree ) {
+                    else if ( bucketTwo >= bucketThree && bucketTwo >= bucketFour && bucketTwo >= bucketFive ) {
                         return res.json ('Bucket Two');
                     }
-                    else if ( bucketThree >= bucketFour ) {
+                    else if ( bucketThree >= bucketFour && bucketThree >= bucketFive ) {
                         return res.json ('Bucket Three');
                     }
                     else if ( bucketFour >= bucketFive ) {
