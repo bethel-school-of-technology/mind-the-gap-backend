@@ -104,37 +104,6 @@ router.post('/login', function (req, res, next) {
   });
 });
 
-//Login user and return JWT as cookie
-// router.post('/login', function (req, res) { 
-//   console.log(req.body.email);
-//     User.findOne({
-//       email: req.body.email
-//     }
-//       }).then(user => {
-//         console.log(user)
-//       if (!user) {
-//         console.log('User not found')
-//         return res.status(401).json({
-//           message : "Invalid username or password"
-//         });
-//       } else {
-//         let passwordMatch = authService.comparePasswords(req.body.password, user.password);
-//         if (passwordMatch) {
-//           let token = authService.signUser(user); 
-//           res.cookie('jwt', token); 
-//           res.send('Login succesful')
-//         } else {
-//           console.log('Wrong Password');
-//           res.send('Wrong Password');
-//         }
-//       }
-
-//     });
-// });
-
-
-
-
 //Create Action
 //url: http://localhost:5000/api/users?first_name=Test&last_name=User&email=example@gmail.com
 /*router.post('/', function (req, res) {
