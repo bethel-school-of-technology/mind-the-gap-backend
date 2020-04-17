@@ -107,6 +107,7 @@ router.post('/', async function (req, res) {
                     console.log(bucketThree);
                     console.log(bucketFour);
                     console.log(bucketFive);
+                    // Assessment tie should go to the preceeding bucket 
                     if ( bucketOne >= bucketTwo && bucketOne >= bucketThree && bucketOne >= bucketFour && bucketOne >= bucketFive ) {
                         return res.json ('Bucket One');
                     }
